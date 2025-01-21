@@ -87,10 +87,20 @@
                 divData.innerHTML = `
                     <img src="https://cdn.discordapp.com/icons/1294277640722714725/1945c4245eab3e9c7dbbe98165beacfd.webp?size=96"></img>
                     <h2>${friendData.username}</h2>
-                    <img src='https://cdn-icons-png.flaticon.com/512/725/725030.png' class='breakup'></img>
+                    <img src='https://cdn-icons-png.flaticon.com/512/725/725030.png' class='breakup' onclick="unfriend(this)"></img>
                 `;
                 friendsList.appendChild(divData);
             }
+        }
+
+        async function unfriend(e) {
+            const username = getCookie("username");
+            const password = getCookie("password");
+            const username_to_unfriend = e.parentElement.querySelector('h2').innerText;
+            const response = await fetch(`/api/get_user_id/${username_to_unfriend}`);
+            const data = await response.json();
+            const userID_to_unfriend = data.id;
+            const response2 = await fetch(``)
         }
 
         async function updatePendingList() {
