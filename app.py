@@ -177,6 +177,7 @@ def unfriend(username, password, friend_id):
 		l2 = [item for item in l2 if item != friend_id]
 		accounts[username]["friends"] = l2
 		write_accounts(accounts)
+		return "OK"
 
 @app.route('/api/users/<id>/unfriend', methods=['POST'])
 def unfriend_friend_api(id):
