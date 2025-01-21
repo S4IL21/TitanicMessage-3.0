@@ -9,7 +9,8 @@ import random
 
 app = Flask(__name__)
 
-unauthenticated = jsonify({"error": "unauthenticated"}), 401
+def unauthenticated():
+	return jsonify({"error": "unauthenticated"}), 401
 
 def load_accounts():
 	with open('accounts.json', 'r') as f:
@@ -135,7 +136,7 @@ def get_user_data(id):
 
 def send_friend_request(username, password, recipient_id):
 	if not authenticate(username, password):
-		return unauthenticated
+		return unauthenticated()
 	else:
 		if not get_id(username) == recipient_id or recipient_id in get_user_data(get_id(username))["friends"]:
 			recipient = get_username(recipient_id)
@@ -146,7 +147,7 @@ def send_friend_request(username, password, recipient_id):
 
 def accept_friend_request(username, password, friender_id):
 	if not authenticate(username, password):
-		return unauthenticated
+		return unauthenticated()
 	else:
 		accounts = load_accounts()
 		accounts[username]["pending"] = [item for item in accounts[username]["pending"] if item != friender_id]
@@ -157,7 +158,7 @@ def accept_friend_request(username, password, friender_id):
 
 def reject_friend_request(username, password, friender_id):
 	if not authenticate(username, password):
-		return unauthenticated
+		return unauthenticated()
 	else:
 		accounts = load_accounts()
 		accounts[username]["pending"] = [item for item in accounts[username]["pending"] if item != friender_id]
@@ -166,7 +167,7 @@ def reject_friend_request(username, password, friender_id):
 
 def unfriend(username, password, friend_id):
 	if not authenticate(username, password):
-		return unauthenticated
+		return unauthenticated()
 	else:
 		accounts = load_accounts()
 		l = accounts[get_username(friend_id)]["friends"]
@@ -208,7 +209,7 @@ def api_chat_id(id):
 	if is_allowed(b['username'], b['password'], id):
 		return get_chat(id)
 	else:
-		return unauthenticated
+		return unauthenticated()
 
 @app.route('/api/chats/<id>/post_message', methods=['POST'])
 def post_message_api(id):
@@ -216,7 +217,7 @@ def post_message_api(id):
 	if is_allowed(b['username'], b['password'], id):
 		return send_message(id, get_id(b['username']), b['content'])
 	else:
-		return unauthenticated
+		return unauthenticated()
 
 @app.route('/api/users/<id>')
 def api_users(id):
