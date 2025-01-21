@@ -97,10 +97,18 @@
             const username = getCookie("username");
             const password = getCookie("password");
             const username_to_unfriend = e.parentElement.querySelector('h2').innerText;
-            const response = await fetch(`/api/get_user_id/${username_to_unfriend}`);
-            const data = await response.json();
-            const userID_to_unfriend = data.id;
-            const response2 = await fetch(``)
+            if (confirm(`Are you sure you want to unfriend ${username_to_unfriend}?`)) {
+                const response = await fetch(`/api/get_user_id/${username_to_unfriend}`);
+                const data = await response.json();
+                const userID_to_unfriend = data.id;
+                const response2 = await fetch(`/api/users/${userID_to_unfriend}/unfriend`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+            }
         }
 
         async function updatePendingList() {
